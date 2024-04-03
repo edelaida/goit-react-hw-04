@@ -1,0 +1,9 @@
+.card {
+  /* display: block; */
+  width: 250px;
+  height: 250px;
+}
+.blokapp {
+  display: flex;
+  flex-wrap: wrap;
+}

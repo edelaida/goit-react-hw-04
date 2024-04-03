@@ -1,22 +1,27 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
-import { RotatingLines } from "react-loader-spinner";
+
+import { requestPictures, requestPicturesQuery } from "./components/api";
+import Loader from "./components/Loader/Loader";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+import SearchBar from "./components/SearchBar/SearchBar";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 
 function App() {
   const [pictures, setPictures] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function fetchPictues() {
       try {
         setLoading(true);
-        const { data } = await axios.get(
-          "https://api.unsplash.com/photos/?client_id=soeSXALL2rbtm5QVQFKtx_SDCoa5F0QUDDkb61eIncI"
-        );
+        const data = await requestPictures();
         console.log(data);
-        setPictures(data.pictures);
+        setPictures(data);
       } catch (error) {
         setError(true);
       } finally {
@@ -25,36 +30,40 @@ function App() {
     }
     fetchPictues();
   }, []);
+
+  useEffect(() => {
+    if (query.length === 0) return;
+
+    async function fetchPicturesQuery() {
+      try {
+        setLoading(true);
+        const data = await requestPicturesQuery(query, page);
+        setPictures(data);
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPicturesQuery();
+  }, [query, page]);
+
+  const onSearchBar = (name) => {
+    setQuery(name);
+  };
+
+  const onSearchPage = () => {
+    setPage(page + 1);
+  };
+
   return (
     <div>
-      <h1>goit-react-hw-04</h1>
-      {loading && (
-        <div>
-          <RotatingLines
-            visible={true}
-            height="96"
-            width="96"
-            color="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
-        </div>
-      )}
-      {error && <p>oops. the request is not correct.</p>}
-      <ul>
-        {pictures &&
-          pictures.length > 0 &&
-          pictures.map((picture) => {
-            return (
-              <li key={picture.id}>
-                <img src={picture.urls.small} alt={picture.alt_description} />
-              </li>
-            );
-          })}
-      </ul>
+      <SearchBar onSearchBar={onSearchBar} />
+      {loading && <Loader />}
+      {error && <ErrorMessage />}
+      {pictures && <ImageGallery pictures={pictures} />}
+      <LoadMoreBtn onSearchPage={onSearchPage} />
     </div>
   );
 }
