@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
-import { requestPictures, requestPicturesQuery } from "./components/api";
+import { requestPicturesQuery } from "./components/api";
 import Loader from "./components/Loader/Loader";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import SearchBar from "./components/SearchBar/SearchBar";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
+import ImageModal from "./components/ImageModal/ImageModal";
 
 function App() {
   const [pictures, setPictures] = useState([]);
@@ -16,29 +17,14 @@ function App() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    async function fetchPictues() {
-      try {
-        setLoading(true);
-        const data = await requestPictures();
-        console.log(data);
-        setPictures(data);
-      } catch (error) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPictues();
-  }, []);
-
-  useEffect(() => {
     if (query.length === 0) return;
 
     async function fetchPicturesQuery() {
       try {
         setLoading(true);
         const data = await requestPicturesQuery(query, page);
-        setPictures(data);
+        setPictures(data.results);
+        setPictures((prev) => [...prev, ...data.results]);
       } catch (error) {
         setError(true);
       } finally {
@@ -51,19 +37,22 @@ function App() {
 
   const onSearchBar = (name) => {
     setQuery(name);
+    setPictures([]);
+    setPage(1);
   };
 
   const onSearchPage = () => {
-    setPage(page + 1);
+    setPage((page) => page + 1);
   };
 
   return (
     <div>
+      <ImageModal />
       <SearchBar onSearchBar={onSearchBar} />
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {pictures && <ImageGallery pictures={pictures} />}
-      <LoadMoreBtn onSearchPage={onSearchPage} />
+      {query.length !== 0 && <LoadMoreBtn onSearchPage={onSearchPage} />}
     </div>
   );
 }

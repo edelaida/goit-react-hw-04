@@ -1,9 +1,14 @@
 .card {
   /* display: block; */
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
 }
 .blokapp {
   display: flex;
   flex-wrap: wrap;
+}
+.card:hover {
+  transform: scale(1.03);
+  cursor: zoom-in;
 }

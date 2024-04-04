@@ -5,14 +5,14 @@ const instance = axios.create({
   baseURL: "https://api.unsplash.com",
 });
 
-export const requestPictures = async () => {
-  const { data } = await instance.get(`/photos/?client_id=${ACCESS_KEY}`);
-  return data;
-};
+// export const requestPictures = async () => {
+//   const { data } = await instance.get(`/photos/?client_id=${ACCESS_KEY}`);
+//   return data;
+// };
 
-export const requestPicturesQuery = async (query = "", page = 1) => {
+export const requestPicturesQuery = async (query, page) => {
   const { data } = await instance.get(
-    `/photos/?client_id=${ACCESS_KEY}&page=${page}&query=${query}`
+    `/search/photos/?client_id=${ACCESS_KEY}&query=${query}&page=${page}`
   );
   return data;
 };

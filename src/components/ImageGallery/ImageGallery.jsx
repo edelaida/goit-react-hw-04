@@ -1,6 +1,6 @@
 import s from "./ImageGallery.module.css";
 
-const ImageGallery = ({ pictures }) => {
+const ImageGallery = ({ pictures, openModal }) => {
   return (
     <ul className={s.blokapp}>
       {pictures &&
@@ -9,6 +9,7 @@ const ImageGallery = ({ pictures }) => {
           return (
             <li key={picture.id}>
               <img
+                onClick={openModal}
                 className={s.card}
                 src={picture.urls.small}
                 alt={picture.alt_description}
@@ -21,8 +22,3 @@ const ImageGallery = ({ pictures }) => {
 };
 
 export default ImageGallery;
-{
-  /* <li key={picture.id}>
-              <img src={picture.urls.small} alt={picture.alt_description} />
-            </li> */
-}
