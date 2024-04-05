@@ -1,24 +1,25 @@
+import ImageCard from "../ImageCard/ImageCard";
 import s from "./ImageGallery.module.css";
+import ImageModal from "../ImageModal/ImageModal";
 
-const ImageGallery = ({ pictures, openModal }) => {
+const ImageGallery = ({ pictures, onImageClick }) => {
   return (
     <ul className={s.blokapp}>
       {pictures &&
         pictures.length > 0 &&
         pictures.map((picture) => {
           return (
-            <li key={picture.id}>
-              <img
-                onClick={openModal}
-                className={s.card}
-                src={picture.urls.small}
-                alt={picture.alt_description}
-              />
-            </li>
+            <ImageCard
+              key={picture.id}
+              picture={picture}
+              onClick={() => onImageClick(picture)}
+            />
           );
         })}
+      <ImageModal />
     </ul>
   );
 };
 
 export default ImageGallery;
+// change

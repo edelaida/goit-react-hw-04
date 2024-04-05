@@ -8,6 +8,9 @@ import ImageGallery from "./components/ImageGallery/ImageGallery";
 import SearchBar from "./components/SearchBar/SearchBar";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "./components/ImageModal/ImageModal";
+import Modal from "react-modal";
+
+Modal.setAppElement;
 
 function App() {
   const [pictures, setPictures] = useState([]);
@@ -15,6 +18,8 @@ function App() {
   const [error, setError] = useState(false);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
 
   useEffect(() => {
     if (query.length === 0) return;
@@ -45,13 +50,29 @@ function App() {
     setPage((page) => page + 1);
   };
 
+  const openModal = (picture) => {
+    setModalData(picture.urls.regular);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalData(null);
+    setModalIsOpen(false);
+  };
+
   return (
     <div>
-      <ImageModal />
+      <ImageModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        modalData={modalData}
+      />
       <SearchBar onSearchBar={onSearchBar} />
       {loading && <Loader />}
       {error && <ErrorMessage />}
-      {pictures && <ImageGallery pictures={pictures} />}
+      {pictures && (
+        <ImageGallery pictures={pictures} onImageClick={openModal} />
+      )}
       {query.length !== 0 && <LoadMoreBtn onSearchPage={onSearchPage} />}
     </div>
   );

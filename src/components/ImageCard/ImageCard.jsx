@@ -1,16 +1,16 @@
 //import React from "react";
 import s from "../ImageGallery/ImageGallery.module.css";
 
-const ImageCard = ({ picture, isOpen }) => {
+const ImageCard = ({ picture, onClick }) => {
   return (
-    <div>
+    <li key={picture.id}>
       <img
-        className={s.bigcard}
-        onClick={isOpen}
-        src={picture.urls.regular}
+        onClick={onClick}
+        className={s.card}
+        src={picture.urls.small}
         alt={picture.alt_description}
       />
-    </div>
+    </li>
   );
 };
 
