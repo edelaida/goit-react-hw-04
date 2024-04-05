@@ -1,6 +1,5 @@
 import ImageCard from "../ImageCard/ImageCard";
 import s from "./ImageGallery.module.css";
-import ImageModal from "../ImageModal/ImageModal";
 
 const ImageGallery = ({ pictures, onImageClick }) => {
   return (
@@ -16,10 +15,8 @@ const ImageGallery = ({ pictures, onImageClick }) => {
             />
           );
         })}
-      <ImageModal />
     </ul>
   );
 };
 
 export default ImageGallery;
-// change
