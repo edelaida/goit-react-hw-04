@@ -26,6 +26,7 @@ function App() {
 
     async function fetchPicturesQuery() {
       try {
+        setError(false);
         setLoading(true);
         const data = await requestPicturesQuery(query, page);
         setPictures(data.results);

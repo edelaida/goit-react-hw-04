@@ -12,3 +12,7 @@
   transform: scale(1.03);
   cursor: zoom-in;
 }
+.bigcard {
+  width: 90%;
+  margin: auto;
+}
