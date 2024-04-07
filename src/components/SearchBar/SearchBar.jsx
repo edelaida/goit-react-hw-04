@@ -1,5 +1,8 @@
 import toast, { Toaster } from "react-hot-toast";
+import s from "../ImageGallery/ImageGallery.module.css";
+
 const notify = () => toast("Please enter search term!");
+
 const SearchBar = ({ onSearchBar }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +17,7 @@ const SearchBar = ({ onSearchBar }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={s.infoform} onSubmit={handleSubmit}>
       <h2>Add new pictures</h2>
       <input type="text" name="name" placeholder="Search name..." />
       <button type="submit">▶ Serch new pictures</button>

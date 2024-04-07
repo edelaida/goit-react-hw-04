@@ -29,7 +29,6 @@ function App() {
         setError(false);
         setLoading(true);
         const data = await requestPicturesQuery(query, page);
-        setPictures(data.results);
         setPictures((prev) => [...prev, ...data.results]);
       } catch (error) {
         setError(true);
